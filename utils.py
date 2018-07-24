@@ -12,12 +12,6 @@ def parse_index_file(filename):
 
     return index
 
-def sample_mask(idx, l):
-    mask = np.zeros(l)
-    mask[idx] = 1
-
-    return np.array(mask, dtype=np.bool)
-
 def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     """Convert a scipy sparse matrix to a torch sparse tensor."""
     sparse_mx = sparse_mx.tocoo().astype(np.float32)
@@ -26,6 +20,21 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     values = torch.from_numpy(sparse_mx.data)
     shape = torch.Size(sparse_mx.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
+
+def normalize(mx):
+    """Row-normalize sparse matrix"""
+    rowsum = np.array(mx.sum(1))
+    r_inv = np.power(rowsum, -1).flatten()
+    r_inv[np.isinf(r_inv)] = 0.
+    r_mat_inv = sp.diags(r_inv)
+    mx = r_mat_inv.dot(mx)
+    return mx
+
+def accuracy(output, labels):
+    preds = output.max(1)[1].type_as(labels)
+    correct = preds.eq(labels).double()
+    correct = correct.sum()
+    return correct / len(labels)
 
 def load_data(path="/home/bumsoo/Data/gcn/", dataset="cora"):
     """
@@ -40,6 +49,7 @@ def load_data(path="/home/bumsoo/Data/gcn/", dataset="cora"):
 
     ind.[:dataset].test.index => indices of test instances in graph, for the inductive setting
     """
+    print("\n[STEP 1]: Upload {} dataset.".format(dataset))
 
     names = ['x', 'y', 'tx', 'ty', 'allx', 'ally', 'graph']
     objects = []
@@ -55,7 +65,19 @@ def load_data(path="/home/bumsoo/Data/gcn/", dataset="cora"):
 
     features = sp.vstack((allx, tx)).tolil()
     features[test_idx_reorder, :] = features[test_idx_range, :]
+
+    """
+    # get rid of redundancy
+    for key, value in graph.iteritems():
+        graph[key] = list(set(value))
+    """
+
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
+    print("| # of nodes : {}".format(adj.shape[0]))
+    print("| # of edges : {}".format(adj.sum().sum()/2))
+
+    features = normalize(features)
+    adj = normalize(adj + sp.eye(adj.shape[0]))
 
     features = torch.FloatTensor(np.array(features.todense()))
     adj = sparse_mx_to_torch_sparse_tensor(adj)
@@ -63,20 +85,12 @@ def load_data(path="/home/bumsoo/Data/gcn/", dataset="cora"):
     labels = np.vstack((ally, ty))
     labels[test_idx_reorder, :] = labels[test_idx_range, :]
 
+    labels = torch.LongTensor(np.where(labels)[1])
+
     idx_train = range(len(y))
     idx_val = range(len(y), len(y)+500)
     idx_test = test_idx_range.tolist()
 
-    train_mask = sample_mask(idx_train, labels.shape[0])
-    val_mask = sample_mask(idx_val, labels.shape[0])
-    test_mask = sample_mask(idx_test, labels.shape[0])
+    idx_train, idx_val, idx_test = list(map(lambda x: torch.LongTensor(x), [idx_train, idx_val, idx_test]))
 
-    y_train = np.zeros(labels.shape)
-    y_val = np.zeros(labels.shape)
-    y_test = np.zeros(labels.shape)
-
-    y_train[train_mask, :] = labels[train_mask, :]
-    y_val[val_mask, :] = labels[val_mask, :]
-    y_test[test_mask, :] = labels[test_mask, :]
-
-    return adj, features, y_train, y_val, y_test
+    return adj, features, labels, idx_train, idx_val, idx_test
