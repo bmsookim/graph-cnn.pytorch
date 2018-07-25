@@ -3,6 +3,7 @@ import pickle as pkl
 import networkx as nx
 import scipy.sparse as sp
 import torch
+from scipy.sparse import csgraph
 
 def parse_index_file(filename):
     index = []
@@ -28,7 +29,14 @@ def normalize(mx):
     r_inv[np.isinf(r_inv)] = 0.
     r_mat_inv = sp.diags(r_inv)
     mx = r_mat_inv.dot(mx)
+
     return mx
+
+def laplacian(mx, norm):
+    """Laplacian-normalize sparse matrix"""
+    assert (all (len(row) == len(mx) for row in mx)), "Input should be a square matrix"
+
+    return csgraph.laplacian(adj, normed = norm)
 
 def accuracy(output, labels):
     preds = output.max(1)[1].type_as(labels)
@@ -77,9 +85,9 @@ def load_data(path="/home/bumsoo/Data/Planetoid", dataset="cora"):
     print("| # of edges : {}".format(adj.sum().sum()/2))
 
     features = normalize(features)
+    adj = normalize(adj + sp.eye(adj.shape[0]))
     print("| # of features : {}".format(features.shape[1]))
     print("| # of clases   : {}".format(ally.shape[1]))
-    adj = normalize(adj + sp.eye(adj.shape[0]))
 
     features = torch.FloatTensor(np.array(features.todense()))
     adj = sparse_mx_to_torch_sparse_tensor(adj)
@@ -92,6 +100,10 @@ def load_data(path="/home/bumsoo/Data/Planetoid", dataset="cora"):
     idx_train = range(len(y))
     idx_val = range(len(y), len(y)+500)
     idx_test = test_idx_range.tolist()
+
+    print("| # of train set : {}".format(len(idx_train)))
+    print("| # of val set   : {}".format(len(idx_val)))
+    print("| # of test set  : {}".format(len(idx_test)))
 
     idx_train, idx_val, idx_test = list(map(lambda x: torch.LongTensor(x), [idx_train, idx_val, idx_test]))
 
