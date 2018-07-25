@@ -34,15 +34,16 @@ E : number of classes
     - cora
     - pubmed
 """
+opt = TrainOptions().parse()
+
 # Data upload
-adj, features, labels, idx_train, idx_val, idx_test = load_data(dataset="pubmed")
+adj, features, labels, idx_train, idx_val, idx_test = load_data(path=opt.dataroot, dataset=opt.dataset)
 use_gpu = torch.cuda.is_available()
 
 best_model = None
 best_acc = 0
 
 # Define the model and optimizer
-opt = TrainOptions().parse()
 model = GCN(
         nfeat = features.shape[1],
         nhid = opt.num_hidden,

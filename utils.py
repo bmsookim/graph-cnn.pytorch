@@ -44,7 +44,7 @@ def accuracy(output, labels):
     correct = correct.sum()
     return correct / len(labels)
 
-def load_data(path="/home/bumsoo/Data/Planetoid", dataset="cora"):
+def load_data(path, dataset):
     """
     ind.[:dataset].x     => the feature vectors of the training instances (scipy.sparse.csr.csr_matrix)
     ind.[:dataset].y     => the one-hot labels of the labeled training instances (numpy.ndarray)
