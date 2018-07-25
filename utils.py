@@ -36,7 +36,7 @@ def accuracy(output, labels):
     correct = correct.sum()
     return correct / len(labels)
 
-def load_data(path="/home/bumsoo/Data/gcn/", dataset="cora"):
+def load_data(path="/home/bumsoo/Data/Planetoid", dataset="cora"):
     """
     ind.[:dataset].x     => the feature vectors of the training instances (scipy.sparse.csr.csr_matrix)
     ind.[:dataset].y     => the one-hot labels of the labeled training instances (numpy.ndarray)
@@ -77,6 +77,8 @@ def load_data(path="/home/bumsoo/Data/gcn/", dataset="cora"):
     print("| # of edges : {}".format(adj.sum().sum()/2))
 
     features = normalize(features)
+    print("| # of features : {}".format(features.shape[1]))
+    print("| # of clases   : {}".format(ally.shape[1]))
     adj = normalize(adj + sp.eye(adj.shape[0]))
 
     features = torch.FloatTensor(np.array(features.todense()))

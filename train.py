@@ -27,6 +27,11 @@ E : number of classes
     - adjacency matrix (N x N)
     - feature matrix (N x D)
     - label matrix (N x E)
+
+@ dataset :
+    - citeseer
+    - cora
+    - pubmed
 """
 adj, features, labels, idx_train, idx_val, idx_test = load_data(dataset="pubmed")
 
@@ -39,7 +44,7 @@ print("| Label matrix     : {}".format(labels.shape))
 
 model = GCN(
         nfeat = features.shape[1],
-        nhid = 2048,
+        nhid = 1024,
         nclass = labels.max().item() + 1,
         dropout = 0.5
 )
@@ -55,13 +60,13 @@ if use_gpu:
     _, features, adj, labels, idx_train, idx_val, idx_test = \
             list(map(lambda x: x.cuda(), [model, features, adj, labels, idx_train, idx_val, idx_test]))
 
-#print("\n[STEP 2'] : Forward demonstration")
-#output = model(features, adj)
-#print("| Shape of result : {}".format(output.shape))
+print("\n[STEP 3] : Dummy Forward")
+output = model(features, adj)
+print("| Shape of result : {}".format(output.shape))
+
 best_model = model
 best_acc = 0
 
-print("\n[STEP 3] : Training")
 def train(epoch):
     global best_model
     global best_acc
@@ -90,7 +95,9 @@ def train(epoch):
         print("| Validation acc : {}%\n".format(acc_val.data.cpu().numpy() * 100))
 
     if acc_val > best_acc:
-        print("| Best acc : {}%\n". format(acc_val.data.cpu().numpy() * 100))
+        print("=> Training Epoch #{} : lr = {}".format(epoch, 1e-2))
+        print("| Training acc : {}%".format(acc_train.data.cpu().numpy() * 100))
+        print("| Best acc : {}%". format(acc_val.data.cpu().numpy() * 100))
         best_acc = acc_val
         best_model = model
 
@@ -103,6 +110,7 @@ def test():
     print("| Test acc : {}%\n".format(acc_val.data.cpu().numpy() * 100))
 
 if __name__ == "__main__":
+    print("\n[STEP 4] : Training")
     for epoch in range(10000):
         train(epoch)
 
