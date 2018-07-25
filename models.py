@@ -9,21 +9,21 @@ class GCN(nn.Module):
 
         self.gc1 = GraphConvolution(nfeat, nhid)
 
-        self.gc_path_1_1 = GraphConvolution(nhid, 4)
-        self.gc_path_1_2 = GraphConvolution(4, 4)
-        self.gc_path_1_3 = GraphConvolution(4, nhid)
+        self.gc_path_1_1 = GraphConvolution(nhid, 16)
+        self.gc_path_1_2 = GraphConvolution(16, 16)
+        self.gc_path_1_3 = GraphConvolution(16, nhid)
 
-        self.gc_path_2_1 = GraphConvolution(nhid, 4)
-        self.gc_path_2_2 = GraphConvolution(4, 4)
-        self.gc_path_2_3 = GraphConvolution(4, nhid)
+        self.gc_path_2_1 = GraphConvolution(nhid, 16)
+        self.gc_path_2_2 = GraphConvolution(16, 16)
+        self.gc_path_2_3 = GraphConvolution(16, nhid)
 
-        self.gc_path_3_1 = GraphConvolution(nhid, 4)
-        self.gc_path_3_2 = GraphConvolution(4, 4)
-        self.gc_path_3_3 = GraphConvolution(4, nhid)
+        self.gc_path_3_1 = GraphConvolution(nhid, 16)
+        self.gc_path_3_2 = GraphConvolution(16, 16)
+        self.gc_path_3_3 = GraphConvolution(16, nhid)
 
-        self.gc_path_4_1 = GraphConvolution(nhid, 4)
-        self.gc_path_4_2 = GraphConvolution(4, 4)
-        self.gc_path_4_3 = GraphConvolution(4, nhid)
+        self.gc_path_4_1 = GraphConvolution(nhid, 16)
+        self.gc_path_4_2 = GraphConvolution(16, 16)
+        self.gc_path_4_3 = GraphConvolution(16, nhid)
 
         self.gc2 = GraphConvolution(nhid, nclass)
         self.dropout = dropout
