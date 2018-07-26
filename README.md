@@ -27,9 +27,9 @@ Output
 Graph-level outputs can be modeled by introducing some form of pooling operation.
 
 Every neural network layer can then be written as a non-linear function
-$H^(l+1) = f(H^(l), A)$
+\\(H^(l+1) = f(H^(l), A)\\)
 
-with $H^(0) = X$ and $H^(L) = Z$, $L$ being the number of layers. The specific models then differ only in how $f$ is chosen and parameterized.
+with \\(H^(0) = X\\) and \\(H^(L) = Z\\), \\(L\\) being the number of layers. The specific models then differ only in how $f$ is chosen and parameterized.
 
 ## Requirements
 See the [installation instruction](INSTALL.md) for a step-by-step installation guide.
