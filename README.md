@@ -13,6 +13,8 @@ Many important real-world datasets come in the form of graphs or networks: socia
 
 Currently, most graph neural network models have a somewhat universal architecture in common. They are referred as Graph Convoutional Networks(GCNs) since filter parameters are typically shared over all locations in the graph.
 
+![alt_tag](./imgs/gcn_web.png)
+
 For these models, the goal is to learn a function of signals/features on a graph G=(V, E), which takes as 
 
 ```bash
