@@ -13,27 +13,23 @@ Many important real-world datasets come in the form of graphs or networks: socia
 
 Currently, most graph neural network models have a somewhat universal architecture in common. They are referred as Graph Convoutional Networks(GCNs) since filter parameters are typically shared over all locations in the graph.
 
-![alt_tag](./imgs/gcn_web.png)
+<p align="center"><img width="80%" src="./imgs/gcn_web.png"></p>
 
 For these models, the goal is to learn a function of signals/features on a graph G=(V, E), which takes as 
 
-```bash
 Input
 - N x D feature matrix (N : Number of nodes, D : number of input features)
 - representative description of the graph structure in matrix form; typically in the form of adjacency matrix A
 
 Output
 - N x F feature matrix (N : Number of nodes, F : number of output features)
-```
 
 Graph-level outputs can be modeled by introducing some form of pooling operation.
 
 Every neural network layer can then be written as a non-linear function
-```bash
-H^(l+1) = f(H^(l), A),
-```
+$H^(l+1) = f(H^(l), A)$
 
-with H^(0) = X and H^(L) = Z, L being the number of layers. The specific models then differ only in how f is chosen and parameterized.
+with $H^(0) = X$ and $H^(L) = Z$, $L$ being the number of layers. The specific models then differ only in how $f$ is chosen and parameterized.
 
 ## Requirements
 See the [installation instruction](INSTALL.md) for a step-by-step installation guide.
