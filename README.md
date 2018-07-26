@@ -25,9 +25,10 @@ Output
 Graph-level outputs can be modeled by introducing some form of pooling operation.
 
 Every neural network layer can then be written as a non-linear function
+
 ![H equation](http://latex.codecogs.com/gif.latex?H%5E%7B%28l&plus;1%29%7D%3Df%28H%5El%2C%20A%29)
 
-with \\(H^(0) = X\\) and \\(H^(L) = Z\\), \\(L\\) being the number of layers. The specific models then differ only in how $f$ is chosen and parameterized.
+with ![H(0)](http://latex.codecogs.com/gif.latex?H%5E%7B%280%29%7D%3DX) and ![H(L)](http://latex.codecogs.com/gif.latex?H%5E%7B%28L%29%7D%3DZ), where L is the number of layers. The specific models then differ only in how function f is chosen and parameterized.
 
 ## Requirements
 See the [installation instruction](INSTALL.md) for a step-by-step installation guide.
