@@ -5,8 +5,6 @@ Pytorch implementation of Graph Convolution Networks.
 This project is made by Bumsoo Kim.
 
 Korea University, Master-Ph.D intergrated Course.
-<p align="center"><img width="40%" src="./imgs/transfer-learning.jpeg"></p>
-
 
 ## Graph Convolutional Networks
 Many important real-world datasets come in the form of graphs or networks: social networks, knowledge graphs, protein-interaction networks, the World Wide Web, etc. In this repository, we introduce a basic tutorial for generalizing neural netowrks to work on arbitrarily structured graphs, along with a proposal of a new structure that outperforms the state-of-the-art performance of current Graph Convolutional Networks([Attention GCN]()).
@@ -27,7 +25,7 @@ Output
 Graph-level outputs can be modeled by introducing some form of pooling operation.
 
 Every neural network layer can then be written as a non-linear function
-\\(H^(l+1) = f(H^(l), A)\\)
+![H equation](http://latex.codecogs.com/gif.latex?H%5E%7B%28l&plus;1%29%7D%3Df%28H%5El%2C%20A%29)
 
 with \\(H^(0) = X\\) and \\(H^(L) = Z\\), \\(L\\) being the number of layers. The specific models then differ only in how $f$ is chosen and parameterized.
 
