@@ -32,11 +32,11 @@ with ![H(0)](http://latex.codecogs.com/gif.latex?H%5E%7B%280%29%7D%3DX) and ![H(
 
 In this repo, the layer-wise propagation is consisted as
 
-<center>![propagation](http://latex.codecogs.com/gif.latex?f%28H%28l%29%2CA%29%3D%5Csigma%28AH%28l%29W%28l%29%29)</center>
+<p align="center"><img src="http://latex.codecogs.com/gif.latex?f%28H%28l%29%2CA%29%3D%5Csigma%28AH%28l%29W%28l%29%29"></p>
 
 As the activation function is a non-linear ReLU (Rectified Linear Unit), this becomes
 
-<center>![propagation_ReLU](http://latex.codecogs.com/gif.latex?f%28H%28l%29%2CA%29%3DReLU%28AH%28l%29W%28l%29%29)</center>
+<p align="center"><img src="(http://latex.codecogs.com/gif.latex?f%28H%28l%29%2CA%29%3DReLU%28AH%28l%29W%28l%29%29)"></p>
 
 **Implementation detail 1 :**
 
@@ -49,7 +49,7 @@ Multiplication with ***A*** means that, for every node, we sum up all the featur
 
 **Final Implementation :**
 
-<center>![final_prop](http://latex.codecogs.com/gif.latex?f%28H%5E%7B%28l%29%7D%2CA%29%3D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D%5Chat%7BA%7D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D)</center>
+<p align="center"><img src="(http://latex.codecogs.com/gif.latex?f%28H%5E%7B%28l%29%7D%2CA%29%3D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D%5Chat%7BA%7D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D)"></p>
 
 ## Requirements
 See the [installation instruction](INSTALL.md) for a step-by-step installation guide.
