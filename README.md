@@ -1,10 +1,7 @@
 <p align="center"><img width="40%" src="./imgs/pytorch.png"></p>
 
-# graph-cnn.pytorch
 Pytorch implementation of Graph Convolution Networks.
-This project is made by Bumsoo Kim.
-
-Korea University, Master-Ph.D intergrated Course.
+This project is made by Bumsoo Kim, Ph.D Candidate in Korea University.
 
 ## Graph Convolutional Networks
 Many important real-world datasets come in the form of graphs or networks: social networks, knowledge graphs, protein-interaction networks, the World Wide Web, etc. In this repository, we introduce a basic tutorial for generalizing neural netowrks to work on arbitrarily structured graphs, along with a proposal of a new structure that outperforms the state-of-the-art performance of current Graph Convolutional Networks([Attention GCN]()).
@@ -49,7 +46,11 @@ Multiplication with ***A*** means that, for every node, we sum up all the featur
 
 **Final Implementation :**
 
+Combining the two implementation details above gives us a final propagation rule introduced in [Kipf & Welling](http://arxiv.org/abs/1609.02907) (ICLR 2017).
+
 <p align="center"><img src="http://latex.codecogs.com/gif.latex?f%28H%5E%7B%28l%29%7D%2CA%29%3D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D%5Chat%7BA%7D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D"></p>
+
+For more details, see [here](https://tkipf.github.io/graph-convolutional-networks/)
 
 ## Requirements
 See the [installation instruction](INSTALL.md) for a step-by-step installation guide.
@@ -57,46 +58,32 @@ See the [server instruction](SERVER.md) for server settup.
 - Install [cuda-8.0](https://developer.nvidia.com/cuda-downloads)
 - Install [cudnn v5.1](https://developer.nvidia.com/cudnn)
 - Download [Pytorch for python-2.7](https://pytorch.org) and clone the repository.
+- Install python package 'networkx'
+
 ```bash
 pip install http://download.pytorch.org/whl/cu80/torch-0.1.12.post2-cp27-none-linux_x86_64.whl
 pip install torchvision
-git clone https://github.com/meliketoy/resnet-fine-tuning.pytorch
+git clone https://github.com/meliketoy/graph-cnn.pytorch
+pip install networkx
 ```
 
-## Basic Setups
-After you have cloned this repository into your file system, open [config.py](./config.py),
-And edit the lines below to your data directory.
-```bash
-data_base = [:dir to your original dataset]
-aug_base =  [:dir to your actually trained dataset]
-```
+## Planetoid Dataset
+In this repo, we use an implementation of Planetoid, a graph-based sem-supervised learning method proposed in the following paper: [Revisiting Semi-Supervised Learning with Graph Embeddings](https://arxiv.org/abs/1603.08861).
 
-For training, your data file system should be in the following hierarchy.
-Organizing codes for your data into the given requirements will be provided [here](https://github.com/meliketoy/image-preprocessing)
+### Transductive learning
+- x : the feature vectors of the training instances
+- y : the one-hot labels of the training instances
+- graph : {index: [index of neighber nodes]}, where the neighbor nodes are given as a list.
 
-```bash
-[:data file name]
+### Inductive learning
+- x : the feature vectors of the labeled training instances
+- y : the one-hot labels of the training instances
+- allx : the feature vectors of both labeled and unlabeled training instances.
 
-    |-train
-        |-[:class 0]
-        |-[:class 1]
-        |-[:class 2]
-        ...
-        |-[:class n]
-    |-val
-        |-[:class 0]
-        |-[:class 1]
-        |-[:class 2]
-        ...
-        |-[:class n]
-```
+For more details, see [here](https://github.com/kimiyoung/planetoid)
 
 ## How to run
 After you have cloned the repository, you can train the dataset by running the script below.
-
-You can set the dimension of the additional layer in [config.py](./config.py)
-
-The resetClassifier option will automatically detect the number of classes in your data folder and reset the last classifier layer to the according number.
 
 ```bash
 # zero-base training
@@ -150,36 +137,6 @@ python main.py \
 
 $ ./test/resnet.sh
 
-```
-
-The code above will automatically download weights from the given depth data, and train your dataset with a very small learning rate.
-
-## Feature extraction
-For various training mechanisms, extracted feature vectors are needed.
-
-This repository will provide you not only feature extraction from pre-trained networks,
-
-but also extractions from a model that was trained by yourself.
-
-Just set the test directory in the [config.py](config.py) and run the code below.
-
-```bash
-python extract_features.py
-```
-
-This will automatically create pickles in a newly created 'vector' directory,
-
-which will contain dictionary pickles which contains the below.
-
-Currently, the 'score' will only cover 0~1 scores for binary classes.
-
-Confidence scores for multiple class will be updated afterwards.
-
-```bash
-pickle_file [name : image base name]
-    |- 'file_name' : file name of the test image
-    |- 'features'  : extracted feature vector
-    |- 'score'     : Score for binary classification
 ```
 
 Enjoy :-)
