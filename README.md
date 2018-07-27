@@ -100,27 +100,4 @@ python train.py --dataroot [:dir to dataset] --datset [:cora | citeseer | pubmed
 
 ## Test (Inference) various networks
 
-For testing out your fine-tuned model on alexnet, VGG(11, 13, 16, 19), ResNet(18, 34, 50, 101, 152),
-
-Please modify the [scripts](./test) and run the line below.
-
-```bash
-
-$ ./test/[:network].sh
-
-```
-For example, if you have trained ResNet with 50 layers, first modify the [resnet test script](./test/resnet.sh)
-
-```bash
-$ vi ./test/resnet.sh
-
-python main.py \
-    --net_type resnet \
-    --depth 50
-    --testOnly
-
-$ ./test/resnet.sh
-
-```
-
 Enjoy :-)
