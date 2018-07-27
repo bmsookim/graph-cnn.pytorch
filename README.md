@@ -1,6 +1,7 @@
 <p align="center"><img width="40%" src="./imgs/pytorch.png"></p>
 
 Pytorch implementation of Graph Convolution Networks.
+
 This project is made by Bumsoo Kim, Ph.D Candidate in Korea University.
 
 ## Graph Convolutional Networks
@@ -70,6 +71,12 @@ pip install networkx
 ## Planetoid Dataset
 In this repo, we use an implementation of Planetoid, a graph-based sem-supervised learning method proposed in the following paper: [Revisiting Semi-Supervised Learning with Graph Embeddings](https://arxiv.org/abs/1603.08861).
 
+This dataset is consisted of 3 sub-datasets ('pubmed', 'cora', 'citeseer')
+
+Each node in the dataset represents a document, and the edge represents the 'reference' relationship between the documents.
+
+The data
+
 ### Transductive learning
 - x : the feature vectors of the training instances
 - y : the one-hot labels of the training instances
@@ -82,41 +89,18 @@ In this repo, we use an implementation of Planetoid, a graph-based sem-supervise
 
 For more details, see [here](https://github.com/kimiyoung/planetoid)
 
-## How to run
+## Train network
 After you have cloned the repository, you can train the dataset by running the script below.
 
-```bash
-# zero-base training
-python main.py --lr [:lr] --depth [:depth] --resetClassifier
-
-# fine-tuning
-python main.py --finetune --lr [:lr] --depth [:depth]
-
-# fine-tuning with additional linear layers
-python main.py --finetune --addlayer --lr [:lr] --depth [:depth]
-```
-
-## Train various networks
-
-I have added fine-tuning & transfer learning script for alexnet, VGG(11, 13, 16, 19),
-ResNet(18, 34, 50, 101, 152).
-
-Please modify the [scripts](./train) and run the line below.
+Download the planetoid datset above and give the [:dir to dataset] the directory to the downloaded datset.
 
 ```bash
-
-$ ./train/[:network].sh 
-
-# For example, if you want to pretrain alexnet, just run
-$ ./train/alexnet.sh
-
+python train.py --dataroot [:dir to dataset] --datset [:cora | citeseer | pubmed]
 ```
 
 ## Test (Inference) various networks
 
 For testing out your fine-tuned model on alexnet, VGG(11, 13, 16, 19), ResNet(18, 34, 50, 101, 152),
-
-First, set your data directory as test_dir in [config.py](./config.py).
 
 Please modify the [scripts](./test) and run the line below.
 
