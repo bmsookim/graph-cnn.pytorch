@@ -15,11 +15,11 @@ Currently, most graph neural network models have a somewhat universal architectu
 
 For these models, the goal is to learn a function of signals/features on a graph G=(V, E), which takes as 
 
-Input
+### Input
 - N x D feature matrix (N : Number of nodes, D : number of input features)
 - representative description of the graph structure in matrix form; typically in the form of adjacency matrix A
 
-Output
+### Output
 - N x F feature matrix (N : Number of nodes, F : number of output features)
 
 Graph-level outputs can be modeled by introducing some form of pooling operation.
@@ -29,6 +29,22 @@ Every neural network layer can then be written as a non-linear function
 ![H equation](http://latex.codecogs.com/gif.latex?H%5E%7B%28l&plus;1%29%7D%3Df%28H%5El%2C%20A%29)
 
 with ![H(0)](http://latex.codecogs.com/gif.latex?H%5E%7B%280%29%7D%3DX) and ![H(L)](http://latex.codecogs.com/gif.latex?H%5E%7B%28L%29%7D%3DZ), where L is the number of layers. The specific models then differ only in how function f is chosen and parameterized.
+
+In this repo, the layer-wise propagation is consisted as
+
+![propagation](http://latex.codecogs.com/gif.latex?f%28H%28l%29%2CA%29%3D%5Csigma%28AH%28l%29W%28l%29%29)
+
+![propagation_ReLU](http://latex.codecogs.com/gif.latex?f%28H%28l%29%2CA%29%3DReLU%28AH%28l%29W%28l%29%29)
+
+### Implementation detail 1 :
+
+Multiplication with A means that, for every node, we sum up all the feature vectors of all neighboring nodes but not the node itself. To address this, we add the identity matrix to A.
+
+### Implementation detail 2 :
+
+A is typically not normalized and therfore the multiplication and therefore the multiplication with A will completely change the scale of the feature vectors. Normalizing A such that all rows sum to one, i.e. ![row sum](http://latex.codecogs.com/gif.latex?D%5E%7B-1%7DA).
+
+
 
 ## Requirements
 See the [installation instruction](INSTALL.md) for a step-by-step installation guide.
