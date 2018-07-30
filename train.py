@@ -45,12 +45,20 @@ best_model = None
 best_acc = 0
 
 # Define the model and optimizer
-model = GCN(
-        nfeat = features.shape[1],
-        nhid = opt.num_hidden,
-        nclass = labels.max().item() + 1,
-        dropout = opt.dropout
-)
+if (opt.model == 'basic'):
+    model = GCN(
+            nfeat = features.shape[1],
+            nhid = opt.num_hidden,
+            nclass = labels.max().item() + 1,
+            dropout = opt.dropout
+    )
+elif (opt.model == 'attention'):
+    model = AGN(
+            nfeat = features.shape[1],
+            nhid = opt.num_hidden,
+            ncalss = labels.max().item() + 1,
+            dropout = opt.dropout
+    )
 
 if (opt.optimizer == 'SGD'):
     optimizer = optim.SGD(
@@ -77,7 +85,7 @@ if not os.path.isdir(save_point):
     os.mkdir(save_point)
 
 def lr_scheduler(epoch, opt):
-    return opt.lr * (0.2 ** (epoch / opt.lr_decay_epoch))
+    return opt.lr * (0.5 ** (epoch / opt.lr_decay_epoch))
 
 # Train
 def train(epoch):
@@ -117,15 +125,6 @@ def train(epoch):
 
         torch.save(state, os.path.join(save_point, '%s.t7' %(opt.model)))
 
-# Test
-def test():
-    print("\n[STEP 4] : Testing")
-    best_model.eval()
-    output = best_model(features, adj)
-    acc_val = accuracy(output[idx_test], labels[idx_test])
-
-    print("| Test acc : {}%\n".format(acc_val.data.cpu().numpy() * 100))
-
 # Main code for training
 if __name__ == "__main__":
 
@@ -148,6 +147,3 @@ if __name__ == "__main__":
     for epoch in range(1, opt.epoch+1):
         train(epoch)
     print("=> Training finished!")
-
-    # Testing
-    test()
