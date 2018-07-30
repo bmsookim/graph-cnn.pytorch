@@ -36,11 +36,11 @@ As the activation function is a non-linear ReLU (Rectified Linear Unit), this be
 
 <p align="center"><img src="http://latex.codecogs.com/gif.latex?f%28H%28l%29%2CA%29%3DReLU%28AH%28l%29W%28l%29%29"></p>
 
-**Implementation detail 1 :**
+**Implementation detail #1 :**
 
 Multiplication with ***A*** means that, for every node, we sum up all the feature vectors of all neighboring nodes but not the node itself. To address this, we add the identity matrix to ***A***.
 
-**Implementation detail 2 :**
+**Implementation detail #2 :**
 
 ***A*** is typically not normalized and therfore the multiplication and therefore the multiplication with ***A*** will completely change the scale of the feature vectors. Normalizing A such that all rows sum to one, i.e. ![row sum](http://latex.codecogs.com/gif.latex?D%5E%7B-1%7DA).
 
@@ -86,6 +86,7 @@ The data
 - x : the feature vectors of the labeled training instances
 - y : the one-hot labels of the training instances
 - allx : the feature vectors of both labeled and unlabeled training instances.
+- graph : {index: [index of neighber nodes]}, where the neighbor nodes are given as a list.
 
 For more details, see [here](https://github.com/kimiyoung/planetoid)
 

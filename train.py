@@ -10,6 +10,7 @@
 # ***********************************************************
 
 import time
+import os
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -67,6 +68,14 @@ else:
     print("Optimizer is not defined")
     sys.exit(1)
 
+if not os.path.isdir('checkpoint'):
+    os.mkdir('checkpoint')
+
+save_point = os.path.join('./checkpoint', opt.dataset)
+
+if not os.path.isdir(save_point):
+    os.mkdir(save_point)
+
 def lr_scheduler(epoch, opt):
     return opt.lr * (0.2 ** (epoch / opt.lr_decay_epoch))
 
@@ -99,6 +108,14 @@ def train(epoch):
         print("| Best acc : {}%". format(acc_val.data.cpu().numpy() * 100))
         best_acc = acc_val
         best_model = model
+
+        state = {
+            'model': best_model,
+            'acc': best_acc,
+            'epoch': epoch,
+        }
+
+        torch.save(state, os.path.join(save_point, '%s.t7' %(opt.model)))
 
 # Test
 def test():

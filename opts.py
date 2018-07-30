@@ -14,6 +14,7 @@ class BaseOptions():
         self.parser.add_argument('--dropout', type=float, default=0.5, help='dropout')
         self.parser.add_argument('--weight_decay', type=float, default=0, help='weight decay')
         self.parser.add_argument('--init_type', type=str, default='normal', help='[Implement this]')
+        self.parser.add_argument('--model', type=str, default='basic', help='[basic | attention]')
 
     def parse(self):
         if not self.initialized:
@@ -35,3 +36,8 @@ class TrainOptions(BaseOptions):
         self.parser.add_argument('--lr_decay_epoch', type=int, default=2500, help='multiply by a gamma every set iter')
 
         self.isTrain = True
+
+class TestOptions(BaseOptions):
+    def initialize(self):
+        BaseOptions.initialize(self)
+        self.isTrain = False
