@@ -36,10 +36,10 @@ def normalize_adj(mx):
     """Row-normalize sparse matrix"""
     rowsum = np.array(mx.sum(1))
     r_inv_sqrt = np.power(rowsum, -0.5).flatten()
-    r_inv_sqrt[np.isinf(r_inv)] = 0.
-    r_mat_inv_sqrt = sp.diags(r_inv)
+    r_inv_sqrt[np.isinf(r_inv_sqrt)] = 0.
+    r_mat_inv_sqrt = sp.diags(r_inv_sqrt)
 
-    return mx.dot(r_mat_inv_sqrt).transpose().dot(r_mat_inv_sqrt)
+    return mx.dot(r_mat_inv_sqrt).transpose().dot(r_mat_inv_sqrt).tocoo()
 
 def laplacian(mx, norm):
     """Laplacian-normalize sparse matrix"""
@@ -50,7 +50,7 @@ def laplacian(mx, norm):
 def accuracy(output, labels):
     preds = output.max(1)[1].type_as(labels)
     correct = preds.eq(labels).double()
-    correct = correct.sum()
+    correct = correct.sum(dim=0)
     return correct / len(labels)
 
 def load_data(path, dataset):

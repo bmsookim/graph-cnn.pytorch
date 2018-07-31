@@ -11,6 +11,7 @@
 
 import time
 import os
+import sys
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -117,12 +118,8 @@ def train(epoch):
     acc_val = accuracy(output[idx_val], labels[idx_val])
 
     if acc_val > best_acc:
-        print("=> Training Epoch #{} : lr = {}".format(epoch, optimizer.lr))
-        print("| Training acc : {}%".format(acc_train.data.cpu().numpy() * 100))
-        print("| Best acc : {}%". format(acc_val.data.cpu().numpy() * 100))
         best_acc = acc_val
         best_model = model
-
         state = {
             'model': best_model,
             'acc': best_acc,
@@ -130,6 +127,13 @@ def train(epoch):
         }
 
         torch.save(state, os.path.join(save_point, '%s.t7' %(opt.model)))
+
+    sys.stdout.flush()
+    sys.stdout.write('\r')
+    sys.stdout.write("=> Training Epoch #{} : lr = {:.4f}".format(epoch, optimizer.lr))
+    sys.stdout.write(" | Training acc : {:6.2f}%".format(acc_train.data.cpu().numpy() * 100))
+    sys.stdout.write(" | Best acc : {:.2f}%". format(best_acc.data.cpu().numpy() * 100))
+
 
 # Main code for training
 if __name__ == "__main__":
