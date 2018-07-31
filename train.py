@@ -17,7 +17,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from utils import *
-from models import GCN
+from models import GCN, GCN_drop_in
 from opts import TrainOptions
 
 """

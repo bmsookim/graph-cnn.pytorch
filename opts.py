@@ -32,8 +32,8 @@ class TrainOptions(BaseOptions):
         BaseOptions.initialize(self)
         self.parser.add_argument('--lr', type=float, default=1e-2, help='initial learning rate')
         self.parser.add_argument('--optimizer', type=str, default='SGD', help='[SGD | Adam]')
-        self.parser.add_argument('--epoch', type=int, default=10000, help='number of training epochs')
-        self.parser.add_argument('--lr_decay_epoch', type=int, default=2500, help='multiply by a gamma every set iter')
+        self.parser.add_argument('--epoch', type=int, default=30000, help='number of training epochs')
+        self.parser.add_argument('--lr_decay_epoch', type=int, default=5000, help='multiply by a gamma every set iter')
         self.isTrain = True
 
 class TestOptions(BaseOptions):
