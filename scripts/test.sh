@@ -1,3 +1,3 @@
 python test.py \
     --dataset pubmed \
-    --model basic \
+    --model residual \

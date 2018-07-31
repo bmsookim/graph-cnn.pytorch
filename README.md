@@ -66,6 +66,7 @@ pip install http://download.pytorch.org/whl/cu80/torch-0.1.12.post2-cp27-none-li
 pip install torchvision
 git clone https://github.com/meliketoy/graph-cnn.pytorch
 pip install networkx
+pip install genometools
 ```
 
 ## Planetoid Dataset

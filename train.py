@@ -46,19 +46,25 @@ best_acc = 0
 
 # Define the model and optimizer
 if (opt.model == 'basic'):
+    print("| Constructing basic GCN model...")
     model = GCN(
             nfeat = features.shape[1],
             nhid = opt.num_hidden,
             nclass = labels.max().item() + 1,
-            dropout = opt.dropout
+            dropout = opt.dropout,
+            init = opt.init_type
     )
-elif (opt.model == 'attention'):
-    model = AGN(
+elif (opt.model == 'drop_in'):
+    print("| Constructing input dropout GCN model...")
+    model = GCN_drop_in(
             nfeat = features.shape[1],
             nhid = opt.num_hidden,
-            ncalss = labels.max().item() + 1,
-            dropout = opt.dropout
+            nclass = labels.max().item() + 1,
+            dropout = opt.dropout,
+            init = opt.init_type
     )
+else:
+    raise NotImplementedError
 
 if (opt.optimizer == 'SGD'):
     optimizer = optim.SGD(

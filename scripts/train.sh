@@ -1,6 +1,7 @@
 python train.py \
     --dataset pubmed \
-    --num_hidden 128 \
+    --num_hidden 32 \
+    --nb_heads 0 \
     --dropout 0.5 \
     --weight_decay 0 \
     --model basic \

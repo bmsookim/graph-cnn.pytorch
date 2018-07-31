@@ -13,8 +13,8 @@ class BaseOptions():
         self.parser.add_argument('--num_hidden', type=int, default=32, help='number of features')
         self.parser.add_argument('--dropout', type=float, default=0.5, help='dropout')
         self.parser.add_argument('--weight_decay', type=float, default=0, help='weight decay')
-        self.parser.add_argument('--init_type', type=str, default='normal', help='[Implement this]')
-        self.parser.add_argument('--model', type=str, default='basic', help='[basic | attention]')
+        self.parser.add_argument('--init_type', type=str, default='normal', help='[uniform | xavier]')
+        self.parser.add_argument('--model', type=str, default='basic', help='[basic | drop_in]')
 
     def parse(self):
         if not self.initialized:
@@ -34,7 +34,6 @@ class TrainOptions(BaseOptions):
         self.parser.add_argument('--optimizer', type=str, default='SGD', help='[SGD | Adam]')
         self.parser.add_argument('--epoch', type=int, default=10000, help='number of training epochs')
         self.parser.add_argument('--lr_decay_epoch', type=int, default=2500, help='multiply by a gamma every set iter')
-
         self.isTrain = True
 
 class TestOptions(BaseOptions):

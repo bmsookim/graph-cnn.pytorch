@@ -105,3 +105,4 @@ venv.bak/
 
 # checkpoint
 ./checkpoint/*
+*.t7
