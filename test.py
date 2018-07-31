@@ -57,6 +57,7 @@ def test():
     print("\n[STEP 4] : Testing")
     model.eval()
     output = model(features, adj)
+    print(labels.max()); assert False
     acc_test = accuracy(output[idx_test], labels[idx_test])
     print("| Validation acc : {}%".format(acc_val.data.cpu().numpy() * 100))
     print("| Test acc : {}%\n".format(acc_test.data.cpu().numpy() * 100))

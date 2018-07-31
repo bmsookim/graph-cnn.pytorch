@@ -25,7 +25,7 @@ Graph-level outputs can be modeled by introducing some form of pooling operation
 
 Every neural network layer can then be written as a non-linear function
 
-![H equation](http://latex.codecogs.com/gif.latex?H%5E%7B%28l&plus;1%29%7D%3Df%28H%5El%2C%20A%29)
+<p align="center"><img src="http://latex.codecogs.com/gif.latex?H%5E%7B%28l&plus;1%29%7D%3Df%28H%5El%2C%20A%29"></p>
 
 with ![H(0)](http://latex.codecogs.com/gif.latex?H%5E%7B%280%29%7D%3DX) and ![H(L)](http://latex.codecogs.com/gif.latex?H%5E%7B%28L%29%7D%3DZ), where ***L*** is the number of layers. The specific models then differ only in how function ***f*** is chosen and parameterized.
 
@@ -52,7 +52,7 @@ Combining the two implementation details above gives us a final propagation rule
 
 <p align="center"><img src="http://latex.codecogs.com/gif.latex?f%28H%5E%7B%28l%29%7D%2CA%29%3D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D%5Chat%7BA%7D%5Chat%7BD%7D%5E%7B-%5Cfrac%7B1%7D%7B2%7D%7D"></p>
 
-For more details, see [here](https://tkipf.github.io/graph-convolutional-networks/)
+For more details, see [here](https://tkipf.github.io/graph-convolutional-networks/).
 
 ## Requirements
 See the [installation instruction](INSTALL.md) for a step-by-step installation guide.
@@ -67,7 +67,6 @@ pip install http://download.pytorch.org/whl/cu80/torch-0.1.12.post2-cp27-none-li
 pip install torchvision
 git clone https://github.com/meliketoy/graph-cnn.pytorch
 pip install networkx
-pip install genometools
 ```
 
 ## Planetoid Dataset
