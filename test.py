@@ -37,7 +37,7 @@ E : number of classes
 """
 opt = TestOptions().parse()
 
-adj, features, labels, _, _, idx_test = load_data(path=opt.dataroot, dataset=opt.dataset)
+adj, features, labels, idx_train, idx_val, idx_test = load_data(path=opt.dataroot, dataset=opt.dataset)
 use_gpu = torch.cuda.is_available()
 
 print("\n[STEP 2] : Obtain (adjacency, feature, label) matrix")

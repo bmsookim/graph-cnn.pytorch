@@ -156,4 +156,4 @@ if __name__ == "__main__":
     print("\n[STEP 4] : Training")
     for epoch in range(1, opt.epoch+1):
         train(epoch)
-    print("=> Training finished!")
+    print("\n=> Training finished!")
