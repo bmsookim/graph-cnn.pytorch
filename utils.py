@@ -80,6 +80,19 @@ def load_data(path, dataset):
     test_idx_reorder = parse_index_file("{}/ind.{}.test.index".format(path, dataset))
     test_idx_range = np.sort(test_idx_reorder)
 
+    if dataset == 'citeseer':
+        """
+        Citeseer dataset contains some isolated nodes in thje graph
+        """
+        test_idx_range_full = range(min(test_idx_reorder), max(test_idx_reorder)+1)
+        tx_extended = sp.lil_matrix((len(test_idx_range_full), x.shape[1]))
+        tx_extended[test_idx_range-min(test_idx_range), :] = tx
+        tx = tx_extended
+
+        ty_extended = np.zeros((len(test_idx_range_full), y.shape[1]))
+        ty_extended[test_idx_range-min(test_idx_range), :] = ty
+        ty = ty_extended
+
     features = sp.vstack((allx, tx)).tolil()
     features[test_idx_reorder, :] = features[test_idx_range, :]
 

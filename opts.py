@@ -13,7 +13,7 @@ class BaseOptions():
         self.parser.add_argument('--num_hidden', type=int, default=32, help='number of features')
         self.parser.add_argument('--dropout', type=float, default=0.5, help='dropout')
         self.parser.add_argument('--weight_decay', type=float, default=0, help='weight decay')
-        self.parser.add_argument('--init_type', type=str, default='normal', help='[uniform | xavier]')
+        self.parser.add_argument('--init_type', type=str, default='uniform', help='[uniform | xavier]')
         self.parser.add_argument('--model', type=str, default='basic', help='[basic | drop_in]')
 
     def parse(self):

@@ -3,9 +3,10 @@
 Pytorch implementation of Graph Convolution Networks.
 
 This project is made by Bumsoo Kim, Ph.D Candidate in Korea University.
+This repo has been forked from [https://github.com/tkipf/pygcn](https://github.com/tkipf/pygcn).
 
 ## Graph Convolutional Networks
-Many important real-world datasets come in the form of graphs or networks: social networks, knowledge graphs, protein-interaction networks, the World Wide Web, etc. In this repository, we introduce a basic tutorial for generalizing neural netowrks to work on arbitrarily structured graphs, along with a proposal of a new structure that outperforms the state-of-the-art performance of current Graph Convolutional Networks([Attention GCN]()).
+Many important real-world datasets come in the form of graphs or networks: social networks, knowledge graphs, protein-interaction networks, the World Wide Web, etc. In this repository, we introduce a basic tutorial for generalizing neural netowrks to work on arbitrarily structured graphs, along with a proposal of a new structure that outperforms the state-of-the-art performance of current Graph Convolutional Networks([Attention GCN](https://arxiv.org/abs/1710.10903)).
 
 Currently, most graph neural network models have a somewhat universal architecture in common. They are referred as Graph Convoutional Networks(GCNs) since filter parameters are typically shared over all locations in the graph.
 
@@ -97,9 +98,14 @@ After you have cloned the repository, you can train the dataset by running the s
 Download the planetoid datset above and give the [:dir to dataset] the directory to the downloaded datset.
 
 ```bash
-python train.py --dataroot [:dir to dataset] --datset [:cora | citeseer | pubmed]
+python train.py --dataroot [:dir to dataset] --datset [:cora | citeseer | pubmed] --model [:basic|drop_in]
 ```
 
 ## Test (Inference) various networks
+After you have finished training, you can test out your network by
+
+```bash
+python test.py --dataroot [:dir to dataset] --dataset [:cora | citeseer | pubmed] --model [:basic|drop_in]
+```
 
 Enjoy :-)
