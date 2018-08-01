@@ -10,6 +10,7 @@
 # ***********************************************************
 
 import time
+import random
 import os
 import sys
 import numpy as np
@@ -43,7 +44,13 @@ opt = TrainOptions().parse()
 adj, features, labels, idx_train, idx_val, idx_test = load_data(path=opt.dataroot, dataset=opt.dataset)
 use_gpu = torch.cuda.is_available()
 
-best_model = None
+random.seed(42)
+np.random.seed(42)
+torch.manual_seed(42)
+if use_gpu:
+    torch.cuda.manual_seed(42)
+
+model, optimizer = None, None
 best_acc = 0
 
 # Define the model and optimizer
@@ -70,7 +77,7 @@ elif (opt.model == 'attention'):
     model = GAT(
             nfeat = features.shape[1],
             nhid = opt.num_hidden,
-            nclass = labels.max().item() + 1,
+            nclass = int(labels.max().item()) + 1,
             dropout = opt.dropout,
             nheads = opt.nb_heads,
             alpha = opt.alpha
@@ -85,14 +92,21 @@ if (opt.optimizer == 'SGD'):
             weight_decay = opt.weight_decay,
             momentum = 0.9
     )
-elif (opt.optimizer == 'Adam'):
+elif (opt.optimizer == 'adam'):
     optimizer = optim.Adam(
             model.parameters(),
-            lr = opt.lr
+            lr = opt.lr,
+            weight_decay = opt.weight_decay
     )
 else:
-    print("Optimizer is not defined")
-    sys.exit(1)
+    raise NotImplementedError
+
+if use_gpu:
+    model.cuda()
+    features, adj, labels, idx_train, idx_val, idx_test = \
+        list(map(lambda x: x.cuda(), [features, adj, labels, idx_train, idx_val, idx_test]))
+
+features, adj, labels = list(map(lambda x : Variable(x), [features, adj, labels]))
 
 if not os.path.isdir('checkpoint'):
     os.mkdir('checkpoint')
@@ -107,7 +121,6 @@ def lr_scheduler(epoch, opt):
 
 # Train
 def train(epoch):
-    global best_model
     global best_acc
 
     t = time.time()
@@ -130,9 +143,8 @@ def train(epoch):
 
     if acc_val > best_acc:
         best_acc = acc_val
-        best_model = model
         state = {
-            'model': best_model,
+            'model': model.state_dict(),
             'acc': best_acc,
             'epoch': epoch,
         }
@@ -147,26 +159,20 @@ def train(epoch):
 
 
 # Main code for training
-if __name__ == "__main__":
+#if __name__ == "__main__":
+print("\n[STEP 2] : Obtain (adjacency, feature, label) matrix")
+print("| Adjacency matrix : {}".format(adj.shape))
+print("| Feature matrix   : {}".format(features.shape))
+print("| Label matrix     : {}".format(labels.shape))
 
-    print("\n[STEP 2] : Obtain (adjacency, feature, label) matrix")
-    print("| Adjacency matrix : {}".format(adj.shape))
-    print("| Feature matrix   : {}".format(features.shape))
-    print("| Label matrix     : {}".format(labels.shape))
 
-    if use_gpu:
-        _, features, adj, labels, idx_train, idx_val, idx_test = \
-                list(map(lambda x: x.cuda(), [model, features, adj, labels, idx_train, idx_val, idx_test]))
+# Test forward
+#print("\n[STEP 3'] : Dummy Forward")
+#output = model(features, adj)
+#print("| Shape of result : {}".format(output.shape))
 
-    features, adj, labels = list(map(lambda x : Variable(x), [features, adj, labels]))
-
-    # Test forward
-    print("\n[STEP 3] : Dummy Forward")
-    output = model(features, adj)
-    print("| Shape of result : {}".format(output.shape))
-
-    # Training
-    print("\n[STEP 4] : Training")
-    for epoch in range(1, opt.epoch+1):
-        train(epoch)
-    print("\n=> Training finished!")
+# Training
+print("\n[STEP 3] : Training")
+for epoch in range(1, opt.epoch+1):
+    train(epoch)
+print("\n=> Training finished!")
