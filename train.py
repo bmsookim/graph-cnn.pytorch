@@ -85,7 +85,7 @@ elif (opt.model == 'attention'):
 else:
     raise NotImplementedError
 
-if (opt.optimizer == 'SGD'):
+if (opt.optimizer == 'sgd'):
     optimizer = optim.SGD(
             model.parameters(),
             lr = opt.lr,
@@ -144,7 +144,7 @@ def train(epoch):
     if acc_val > best_acc:
         best_acc = acc_val
         state = {
-            'model': model.state_dict(),
+            'model': model,
             'acc': best_acc,
             'epoch': epoch,
         }
