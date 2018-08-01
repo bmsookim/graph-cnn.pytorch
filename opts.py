@@ -10,8 +10,8 @@ class BaseOptions():
     def initialize(self):
         self.parser.add_argument('--dataroot', type=str, default='/home/bumsoo/Data/Planetoid', help='path')
         self.parser.add_argument('--dataset', type=str, default='pubmed', help='[cora | citeseer | pubmed]')
-        self.parser.add_argument('--num_hidden', type=int, default=32, help='number of features')
-        self.parser.add_argument('--dropout', type=float, default=0.5, help='dropout')
+        self.parser.add_argument('--num_hidden', type=int, default=1, help='number of features')
+        self.parser.add_argument('--dropout', type=float, default=0.6, help='dropout')
         self.parser.add_argument('--weight_decay', type=float, default=0, help='weight decay')
         self.parser.add_argument('--init_type', type=str, default='uniform', help='[uniform | xavier]')
         self.parser.add_argument('--model', type=str, default='basic', help='[basic | drop_in]')
@@ -34,6 +34,8 @@ class TrainOptions(BaseOptions):
         self.parser.add_argument('--optimizer', type=str, default='SGD', help='[SGD | Adam]')
         self.parser.add_argument('--epoch', type=int, default=30000, help='number of training epochs')
         self.parser.add_argument('--lr_decay_epoch', type=int, default=5000, help='multiply by a gamma every set iter')
+        self.parser.add_argument('--nb_heads', type=int, default=8, help='number of head attentions')
+        self.parser.add_argument('--alpha', type=float, default=0.2, help='Alpha value for the leaky_relu')
         self.isTrain = True
 
 class TestOptions(BaseOptions):

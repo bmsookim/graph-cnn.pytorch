@@ -17,8 +17,9 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
+from torch.autograd import Variable
 from utils import *
-from models import GCN, GCN_drop_in
+from models import GCN, GCN_drop_in, GAT
 from opts import TrainOptions
 
 """
@@ -63,6 +64,16 @@ elif (opt.model == 'drop_in'):
             nclass = labels.max().item() + 1,
             dropout = opt.dropout,
             init = opt.init_type
+    )
+elif (opt.model == 'attention'):
+    print("| Constructing Attention GCN model...")
+    model = GAT(
+            nfeat = features.shape[1],
+            nhid = opt.num_hidden,
+            nclass = labels.max().item() + 1,
+            dropout = opt.dropout,
+            nheads = opt.nb_heads,
+            alpha = opt.alpha
     )
 else:
     raise NotImplementedError
@@ -146,6 +157,8 @@ if __name__ == "__main__":
     if use_gpu:
         _, features, adj, labels, idx_train, idx_val, idx_test = \
                 list(map(lambda x: x.cuda(), [model, features, adj, labels, idx_train, idx_val, idx_test]))
+
+    features, adj, labels = list(map(lambda x : Variable(x), [features, adj, labels]))
 
     # Test forward
     print("\n[STEP 3] : Dummy Forward")

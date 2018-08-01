@@ -104,7 +104,9 @@ def load_data(path, dataset):
     print("| # of clases   : {}".format(ally.shape[1]))
 
     features = torch.FloatTensor(np.array(features.todense()))
-    adj = sparse_mx_to_torch_sparse_tensor(adj)
+    sparse_mx = adj.tocoo().astype(np.float32)
+    #adj = sparse_mx_to_torch_sparse_tensor(adj)
+    adj = torch.FloatTensor(np.array(adj.todense()))
 
     labels = np.vstack((ally, ty))
     labels[test_idx_reorder, :] = labels[test_idx_range, :]
