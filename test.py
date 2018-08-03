@@ -46,7 +46,7 @@ print("| Feature matrix   : {}".format(features.shape))
 print("| Label matrix     : {}".format(labels.shape))
 
 load_model = torch.load(os.path.join('checkpoint', opt.dataset, '%s.t7' %(opt.model)))
-model = load_model['model']
+model = load_model['model'].cpu()
 acc_val = load_model['acc']
 
 if use_gpu:
@@ -55,8 +55,13 @@ if use_gpu:
 
 def test():
     print("\n[STEP 4] : Testing")
+
     model.eval()
     output = model(features, adj)
+
+    print(output[idx_test].shape)
+    print(labels[idx_test].shape)
+
     acc_test = accuracy(output[idx_test], labels[idx_test])
     print("| Validation acc : {}%".format(acc_val.data.cpu().numpy() * 100))
     print("| Test acc : {}%\n".format(acc_test.data.cpu().numpy() * 100))

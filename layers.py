@@ -76,8 +76,6 @@ class GraphAttention(nn.Module):
         self.concat = concat
 
         self.W = nn.Parameter(nn.init.xavier_normal_(torch.Tensor(in_features, out_features).type(torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor), gain=np.sqrt(2.0)), requires_grad=True)
-        #self.a = nn.Parameter(nn.init.xavier_normal_(torch.Tensor(2*out_features, 1).type(torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor), gain=np.sqrt(2.0)), requires_grad=True)
-
         self.a1 = nn.Parameter(nn.init.xavier_normal_(torch.Tensor(out_features, 1).type(torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor), gain=np.sqrt(2.0)), requires_grad=True)
         self.a2 = nn.Parameter(nn.init.xavier_normal_(torch.Tensor(out_features, 1).type(torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor), gain=np.sqrt(2.0)), requires_grad=True)
 
@@ -87,8 +85,6 @@ class GraphAttention(nn.Module):
         h = torch.mm(input, self.W)
         N = h.size()[0]
 
-        #a_input = torch.cat([h.repeat(1, N).view(N * N, -1), h.repeat(N, 1)], dim=1).view(N, -1, 2 * self.out_features)
-        #e = self.leakyrelu(torch.matmul(a_input, self.a).squeeze(2))
         f_1 = torch.matmul(h, self.a1)
         f_2 = torch.matmul(h, self.a2)
         e = self.leakyrelu(f_1 + f_2.transpose(0,1))

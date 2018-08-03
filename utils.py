@@ -13,15 +13,6 @@ def parse_index_file(filename):
 
     return index
 
-def sparse_mx_to_torch_sparse_tensor(sparse_mx):
-    """Convert a scipy sparse matrix to a torch sparse tensor."""
-    sparse_mx = sparse_mx.tocoo().astype(np.float32)
-    indices = torch.from_numpy(np.vstack((sparse_mx.row,
-                                          sparse_mx.col))).long()
-    values = torch.from_numpy(sparse_mx.data)
-    shape = torch.Size(sparse_mx.shape)
-    return torch.sparse.FloatTensor(indices, values, shape)
-
 def normalize(mx):
     """Row-normalize sparse matrix"""
     rowsum = np.array(mx.sum(1))
@@ -99,13 +90,12 @@ def load_data(path="/home/bumsoo/Data/Planetoid", dataset="cora"):
     print("| # of edges : {}".format(adj.sum().sum()/2))
 
     features = normalize(features)
-    adj = normalize(adj + sp.eye(adj.shape[0]))
+    adj = normalize_adj(adj + sp.eye(adj.shape[0]))
     print("| # of features : {}".format(features.shape[1]))
     print("| # of clases   : {}".format(ally.shape[1]))
 
     features = torch.FloatTensor(np.array(features.todense()))
     sparse_mx = adj.tocoo().astype(np.float32)
-    #adj = sparse_mx_to_torch_sparse_tensor(adj)
     adj = torch.FloatTensor(np.array(adj.todense()))
 
     labels = np.vstack((ally, ty))
@@ -135,8 +125,6 @@ def load_data(path="/home/bumsoo/Data/Planetoid", dataset="cora"):
 
         for element in missing:
             save_label = np.insert(save_label, element, 0)
-
-        print(save_label.shape)
 
         labels = torch.LongTensor(save_label)
 

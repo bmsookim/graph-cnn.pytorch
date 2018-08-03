@@ -20,7 +20,7 @@ import torch.optim as optim
 
 from torch.autograd import Variable
 from utils import *
-from models import GCN, GCN_drop_in, GAT
+from models import GCN, GAT
 from opts import TrainOptions
 
 """
@@ -57,15 +57,6 @@ best_acc = 0
 if (opt.model == 'basic'):
     print("| Constructing basic GCN model...")
     model = GCN(
-            nfeat = features.shape[1],
-            nhid = opt.num_hidden,
-            nclass = labels.max().item() + 1,
-            dropout = opt.dropout,
-            init = opt.init_type
-    )
-elif (opt.model == 'drop_in'):
-    print("| Constructing input dropout GCN model...")
-    model = GCN_drop_in(
             nfeat = features.shape[1],
             nhid = opt.num_hidden,
             nclass = labels.max().item() + 1,
@@ -159,20 +150,14 @@ def train(epoch):
 
 
 # Main code for training
-#if __name__ == "__main__":
-print("\n[STEP 2] : Obtain (adjacency, feature, label) matrix")
-print("| Adjacency matrix : {}".format(adj.shape))
-print("| Feature matrix   : {}".format(features.shape))
-print("| Label matrix     : {}".format(labels.shape))
+if __name__ == "__main__":
+    print("\n[STEP 2] : Obtain (adjacency, feature, label) matrix")
+    print("| Adjacency matrix : {}".format(adj.shape))
+    print("| Feature matrix   : {}".format(features.shape))
+    print("| Label matrix     : {}".format(labels.shape))
 
-
-# Test forward
-#print("\n[STEP 3'] : Dummy Forward")
-#output = model(features, adj)
-#print("| Shape of result : {}".format(output.shape))
-
-# Training
-print("\n[STEP 3] : Training")
-for epoch in range(1, opt.epoch+1):
-    train(epoch)
-print("\n=> Training finished!")
+    # Training
+    print("\n[STEP 3] : Training")
+    for epoch in range(1, opt.epoch+1):
+        train(epoch)
+    print("\n=> Training finished!")
